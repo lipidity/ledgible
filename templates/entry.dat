@@ -1,0 +1,14 @@
+{% filter safe %}
+{{ date }} {{ payee }}
+{% if note %}
+    {% for line in note.splitlines() %}
+    ; {{ line }}
+    {% endfor %}
+{% endif %}
+{% for post in postings %}
+    {{ post.account }}{% if post.amount %}  {{ post.amount }}{% endif %}
+
+{% endfor %}
+
+{% endfilter %}
+

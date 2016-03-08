@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<meta charset=utf-8>
+<title>{% block title %}{% endblock %}</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for("static", filename="style.css") }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for("static", filename="awesomplete.css") }}">
+
+<nav>
+<p><a href={{ url_for('balance') }}>Balances</a>
+&middot;
+<a href="{{ url_for('equity') }}?a=^Expenses&amp;a=^Income&amp;a=^Equity">Net Worth</a>
+&middot;
+<a href="{{ url_for('sunburst') }}?a=^Expenses&amp;a=^Income">Cash Flow</a>
+&middot;
+<a href={{ url_for('add') }}>Add transaction</a>
+&middot;
+<a href={{ url_for('edit') }}>Edit</a>
+&middot;
+<a href={{ url_for('xacts') }}>List</a>
+&middot;
+<a href={{ url_for('logout') }}>Logout</a>
+</nav>
+
+{% block content %}{% endblock %}
+
+<datalist id=account></datalist>
+<datalist id=payee></datalist>
+<datalist id=commodity></datalist>
+
+<script src="{{ url_for("static", filename="awesomplete.js") }}"></script>
+<script src="{{ url_for("static", filename="ledger.js") }}"></script>
+

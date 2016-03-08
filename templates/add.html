@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}add{% endblock %}
+
+{% block content %}
+<form autocomplete=off method=post id=transact>
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+<label for=realdate>Date</label>
+<input id=realdate name=realdate class=t type=date min=1900-01-01 max=3000-01-01 required>
+
+<label for=i_payee>Payee</label>
+<input placeholder="Other person or company" id=i_payee list=payee name=payee type=payee>
+
+<label>To</label>
+<div class=row>
+<input name=dir type=hidden value=to>
+<input id=i_a_to name=account type=account list=account placeholder=account required>
+<span class=edit_comm>$</span><input name=amount placeholder=amount type=number step="0.01">
+<input name=commodity size=2 type=hidden>
+
+<button type=button class=add>+</button>
+</div>
+
+<label>From</label>
+<div class=row>
+<input name=dir type=hidden value=from>
+<input id=i_a_from name=account type=account list=account placeholder=account required>
+<span class=edit_comm>$</span><input name=amount placeholder=amount type=number step="0.01">
+<input name=commodity size=2 type=hidden>
+
+<button type=button class=add>+</button>
+</div>
+
+<div>
+<label for=note>Note</label>
+<input id="note" name="note" type="text"/>
+</div>
+
+<input value=Add type=submit>
+</form>
+{% endblock %}

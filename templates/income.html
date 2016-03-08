@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}income{% endblock %}
+
+{% block content %}
+{% include 'filter.html' %}
+
+{% set last_account = ('',) %}
+<table class=pnl><tbody>
+<tr><th>Account
+{% for month in months %}
+    <th>{{ month }}
+{% endfor %}
+{% for account, values in rows %}
+    {% set parents = account[:-1] %}
+    {% set depth = (parents|length) %}
+    {% set p = commonprefix([account, last_account]) %}
+    <tr{{ ' class=f' if depth <= 1 else '' }}>
+    <td><span class=ind>{{ '\u2014\u2002' * ((p|length)-1) }}</span><a href="{{ url_for('xacts', a='/^'+(':'.join(account[1:]))+'(:.*)?$/') }}">{{ ':'.join(account[(p|length):]) }}</a>
+    {% set last_account = account %}
+    {% for month in months %}
+        {% set v = values[month] %}
+        <td{{ ' class=plus' if v > 0 else ' class=minus' if v < 0 else ' class=zero' if (v|string) == '0' else '' }}>
+        {% for line in (v.strip_annotations()|string).splitlines() %}
+            {{ line }}
+            {% if not loop.last %}
+                <br>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+{% endfor %}
+</tbody></table>
+{% endblock %}

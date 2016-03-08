@@ -1,0 +1,44 @@
+<form id=filter method=get>
+
+<input type=checkbox id=tog class="toggle" checked/>
+<label for=tog class=no-sel><small>&middot; Options &middot;</small></label>
+
+<div class=toggle>
+<hr>
+
+<div>
+
+{% for account in request.args.getlist('a') %}
+    {% if account %}
+        <span class=row>
+        <input name=a value="{{ account }}" type=account readonly>
+        <button type=button onclick='this.parentNode.remove()' class=remove>x</button>
+        </span>
+    {% endif %}
+{% endfor %}
+<span class=row>
+<input name=a type=account list=account placeholder=account>
+<button type=button class=add>+</button>
+</span>
+</div>
+<hr>
+<div>
+<input type=date name=b id=b value="{{ request.args.get('b', '') }}" placeholder=start>
+<input type=date name=e id=e value="{{ request.args.get('e', '') }}" placeholder="end date">
+
+{% if showsort %}
+	{% set s = request.args.get('s', '-date') %}
+	<select name=s id=sort>
+	<option disabled{{ '' if s else ' selected' }}>Sort
+	<option value="-date"{{ ' selected' if s == '-date' else '' }}>Date Desc
+	<option value=date{{ ' selected' if s == 'date' else '' }}>Date Asc</select>
+{% endif %}
+
+</div>
+
+<hr>
+<input type=submit value=Apply>
+</div>
+
+</form>
+

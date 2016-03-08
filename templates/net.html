@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}net worth{% endblock %}
+
+{% block content %}
+{% include 'filter.html' %}
+
+<div id="data-count"></div>
+
+<div id="net-chart">
+</div>
+
+<div id="delta-chart">
+</div>
+
+<style>
+</style>
+
+<script src="{{ url_for("static", filename="d3.min.js") }}"></script>
+<link rel=stylesheet href="//cdnjs.cloudflare.com/ajax/libs/dc/2.0.0-beta.14/dc.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.11/crossfilter.min.js" defer></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/dc/2.0.0-beta.14/dc.min.js" defer></script>
+
+<script>
+window.onload=(function(){
+
+function accumulate_group(source_group) {
+    return {
+        all:function () {
+            var cumulate = 0;
+            var result = [];
+            return source_group.all().map(function(d) {
+                cumulate += d.value;
+                return {key:d.key, value:cumulate};
+            });
+        }
+    };
+}
+
+// todo FIXME cannot allow begin date, otherwise will start net worth at wrong value
+d3.json('posts.json'+location.search, function(error, datao){
+var data = datao['posts'];
+var dateFormat = d3.time.format('%Y-%m-%d');
+
+data.forEach(function(d) {
+    d.date = dateFormat.parse(d.date);
+    d.amount = -d.amount;
+});
+
+var ndx = crossfilter(data);
+
+var all = ndx.groupAll();
+
+var dDate = ndx.dimension(function(d){return d.date}),
+dMonth = ndx.dimension(function(d){return d3.time.month(d.date)}),
+dAll = ndx.dimension(function(d){return d});
+
+var sumPerDate = dDate.group().reduceSum(function(d){return d.amount}),
+sumPerMonth = dMonth.group().reduceSum(function(d){return d.amount});
+
+var netChart = dc.lineChart('#net-chart'),
+rangeChart = dc.barChart('#delta-chart'),
+dataCount = dc.dataCount('#data-count');
+
+netChart
+  .width(990)
+  .height(400)
+  .dimension(dDate)
+  .x(d3.time.scale().domain(d3.extent(data, function(d){return d.date})))
+  .round(d3.time.month.round)
+  .xUnits(d3.time.months)
+  .group(accumulate_group(sumPerDate))
+  .elasticY(true)
+  .brushOn(false)
+  .margins({top: 10, right: 50, bottom: 30, left: 100})
+  //.mouseZoomable(true)
+
+rangeChart
+  .width(990)
+  .height(200)
+  .margins({top: 0, right: 50, bottom: 20, left: 100})
+  .dimension(dMonth)
+  .group(sumPerMonth)
+  .centerBar(true)
+  .x(d3.time.scale().domain(d3.extent(data, function(d){return d.date})))
+  .round(d3.time.month.round)
+  .alwaysUseRounding(true)
+  .xUnits(d3.time.months)
+  .brushOn(false)
+
+dataCount
+  .dimension(ndx)
+  .group(all);
+
+d3.selectAll('a#all').on('click', function () {
+  dc.filterAll();
+  dc.renderAll();
+});
+
+dc.renderAll();
+
+})
+
+})
+</script>
+{% endblock %}

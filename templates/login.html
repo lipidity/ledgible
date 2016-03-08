@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<meta charset=utf-8>
+<title>Ledger : Login</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for("static", filename="style.css") }}">
+
+<h1>Ledger</h1>
+
+<form method=post>
+
+{{ error | default('') }}
+
+<label for=u>User</label>
+<input id=u name=user autofocus autocapitalize="none">
+
+<label for=p>Password</label>
+<input id=p type=password name=password>
+
+<input name=csrf_token type=hidden value="{{ csrf_token() }}">
+
+<input type=submit value=Login>
+
+</form>

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}register{% endblock %}
+
+{% block content %}
+{% set showsort = True %}
+{% include 'filter.html' %}
+
+<table class=reg>
+<thead>
+<tr><th>Date<th>Payee<th>Account<th>Amount<th>Note
+{% set last_xact = None %}
+{% set p = 0 %}
+{% for post in posts %}
+    {% set xact = post.xact %}
+    {% if xact != last_xact %}
+        {% set p = counts.pop() %}
+        <tbody class={{xact.state}}>
+        <tr>
+        <td rowspan={{p}}>{{xact.date}}<td rowspan={{p}}>{{xact.payee}}
+    {% else %}
+        <tr>
+    {% endif %}
+    <td>{{ post.account }}
+    <td class={{'plus' if post.amount > 0 else 'minus'}}>{{ post.amount.strip_annotations() }}
+    {% if last_xact != xact %}
+        <td class=note rowspan={{p}}>
+        {% if xact.note %}
+            <ul>
+            {% for line in xact.note.splitlines() %}
+                <li>{{ line }}
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endif %}
+    {% set last_xact = xact %}
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}balance{% endblock %}
+
+{% block content %}
+{% include 'filter.html' %}
+
+{# TODO do links by javascript to save bytes #}
+
+{% set last_account = ('',) %}
+<table class=bal><tbody>
+{% for account, total in rows %}
+    {% set parents = account[:-1] %}
+    {% set depth = (parents|length) %}
+    {% set p = commonprefix([account, last_account]) %}
+<tr{{ ' class=f' if (p|length) == 1 else ''}}>
+<td class={{ 'plus' if total > 0 else 'minus' }}>
+{{ (total.strip_annotations()|string).splitlines() | join('<br>'|safe) }}
+<td><span class=ind>{{ '\u2014\u2002' * ((p|length)-1) }}</span>
+<a href="{{ url_for('xacts', a=('/^'+(':'.join(account[1:]))+'(:.*)?$/')) }}">{{ account[(p|length):]|join(':') }}</a>
+    {% set last_account = account %}
+{% endfor %}
+</tbody></table>
+
+{% endblock %}

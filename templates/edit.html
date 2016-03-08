@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}edit{% endblock %}
+
+{% block content %}
+<FORM METHOD="post" id=edit>
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<textarea rows=40 name=f style='width:100%'>{{ content }}</textarea>
+<input type=submit value=Submit>
+</FORM>
+
+{% endblock %}
