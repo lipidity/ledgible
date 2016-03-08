@@ -1,6 +1,6 @@
 # ledgible
 
-ledgible is a fully-featured web interface for the ledger-cli accounting program.
+ledgible is a fully-featured web interface for the [ledger-cli](http://ledger-cli.org) accounting program.
 
 If you use already use ledger-cli:
 
@@ -13,6 +13,8 @@ If you use already use ledger-cli:
 * * * *
 
 ledgible is usable by **normal people** (my parents, siblings, and spouse use it) if some trustworthy sysadmin hosts it for them
+
+[See it in action here](https://lipidity.com/cgi/ledgible/app.py/) (login as demo/demo; changes not permitted)
 
 ## Installation
 
