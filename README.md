@@ -12,9 +12,7 @@ If you use already use ledger-cli:
 
 * * * *
 
-ledgible is usable by **normal people** (my parents, siblings, and spouse use it) if some trustworthy sysadmin hosts it for them
-
-[See it in action here](https://lipidity.com/cgi/ledgible/app.py/) (login as demo/demo; changes not permitted)
+ledgible is usable by **normal people** (my parents, siblings, and spouse have used it before I migrated us all to [fava](https://beancount.github.io/fava/)) if some trustworthy sysadmin hosts it for them
 
 ## Installation
 
