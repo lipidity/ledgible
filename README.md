@@ -35,8 +35,8 @@ Note: Your CGI process will need permission to modify your git repository. For e
 ### 2. Install and configure ledgible
 
     $ cd /srv/http
-    $ wget https://lipidity.com/pub/ledgible/ledgible-latest.tar.xz
-    $ tar xf ledgible-latest.tar.xz
+    $ wget https://lipidity.com/pub/web/ledgible/ledgible.tar.gz
+    $ tar xf ledgible.tar.gz
     $ cd ledgible
     $ python2 gen_settings.py
     username: john
