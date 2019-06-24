@@ -14,10 +14,12 @@
 {% for post in posts %}
     {% set xact = post.xact %}
     {% if xact != last_xact %}
+        {% if counts|length > 0 %}
         {% set p = counts.pop() %}
         <tbody class={{xact.state}}>
         <tr>
         <td rowspan={{p}}>{{xact.date}}<td rowspan={{p}}>{{xact.payee}}
+        {% endif %}
     {% else %}
         <tr>
     {% endif %}
